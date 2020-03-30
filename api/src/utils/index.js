@@ -55,7 +55,7 @@ export const saveNasaImagesToDisk = async url => {
         dest: filePath,
         timeout: 300000
       }
-    downloadImage(nasaApiOptions)
+    await downloadImage(nasaApiOptions)
   });
   return imgDownload;
 };
@@ -64,6 +64,7 @@ export const saveImagesInDateRange = async () => {
   const datesArr = await getDatesFromFile(dateFile);
   datesArr.map(async date => {
     const nasaUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${process.env.nasaApiKey}`;
-    await saveNasaImagesToDisk(nasaUrl);
+    const saveDateImages = await saveNasaImagesToDisk(nasaUrl);
+    return saveDateImages
   });
 };
