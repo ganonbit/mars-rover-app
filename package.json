@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "name": "mars-rover-app",
+  "scripts": {
+    "back": "api/src/app/index.js",
+    "front": "client/react-scripts start"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/express": "4.17.0",
+    "@types/jest": "24.9.1",
+    "@types/node": "^13.9.5",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "@typescript-eslint/parser": "2.19.2",
+    "cypress": "^4.1.0",
+    "dotenv": "6.2.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.17.0",
+    "eslint-plugin-react-hooks": "2.3.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "jest": "24.9.0",
+    "prettier": "1.19.1",
+    "ts-jest": "24.0.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~6.0.0",
+    "typescript": "~3.7.4"
+  },
+  "workspaces": [
+    "api/*",
+    "client/*"
+  ]
+}
