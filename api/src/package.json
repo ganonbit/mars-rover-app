@@ -10,6 +10,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "graphql": "^14.6.0",
+    "image-downloader": "^3.5.0",
     "write": "^2.0.0"
   }
 }

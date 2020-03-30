@@ -2,8 +2,8 @@
   "private": true,
   "name": "mars-rover-app",
   "scripts": {
-    "back": "node -r esm api/src/app/index.js",
-    "front": "client/react-scripts start"
+    "api-start": "node -r esm api/src/app/index.js",
+    "client-start": "client/react-scripts start"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",

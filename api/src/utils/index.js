@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import { readFileSync, createWriteStream, existsSync, mkdirSync } from 'fs';
-import { get } from 'https';
+import download from 'image-downloader';
 
 const dateFile = 'api/src/assets/files/dates.txt';
 
@@ -15,6 +15,16 @@ const datesArr = readFileSync(file, 'utf8').toString().split('\n');
 const formattedDatesArr = datesArr.map(date => (date = new Date(date).toLocaleDateString('fr-CA')));
 return formattedDatesArr;
 };
+
+  async function downloadImage(options) {
+    try {
+      const { filename, image } = await download.image(options)
+      console.log(filename) 
+    } catch (e) {
+      console.error(e)
+    }
+  }
+   
 
 export const fetchNasaApiImages = async url => {
   try {
@@ -32,23 +42,22 @@ export const fetchNasaApiImages = async url => {
 
 export const saveNasaImagesToDisk = async url => {
   const imgArr = await fetchNasaApiImages(url);
-  const uploadImage = imgArr.map(async entry => {
+  const imgDownload = imgArr.map(async entry => {
     const imgFolder = `api/src/assets/images`;
     const imgUrl = entry.img_src.replace(/http:/, 'https:');
     const imgExt = await findExtensionOfString(imgUrl);
     const fileName = `${entry.earth_date}_${entry.id}.${imgExt}`;
     const filePath = `${imgFolder}/${fileName}`
 
-    !existsSync(imgFolder) && (
-        mkdirSync(imgFolder, { recursive: true }, err => {console.error(err)})
-    );
-    
-    get(imgUrl, res => {
-        const fileWriteStream = createWriteStream(filePath);
-        res.pipe(fileWriteStream);
-    });
+    !existsSync(imgFolder) && mkdirSync(imgFolder, { recursive: true });
+    const nasaApiOptions = {
+        url: imgUrl,
+        dest: filePath,
+        timeout: 300000
+      }
+    downloadImage(nasaApiOptions)
   });
-  return uploadImage;
+  return imgDownload;
 };
 
 export const saveImagesInDateRange = async () => {
