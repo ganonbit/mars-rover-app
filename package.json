@@ -2,7 +2,7 @@
   "private": true,
   "name": "mars-rover-app",
   "scripts": {
-    "back": "api/src/app/index.js",
+    "back": "node -r esm api/src/app/index.js",
     "front": "client/react-scripts start"
   },
   "devDependencies": {

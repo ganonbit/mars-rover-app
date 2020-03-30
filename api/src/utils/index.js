@@ -2,17 +2,16 @@ import fetch from 'isomorphic-unfetch';
 import { readFileSync, createWriteStream, existsSync, mkdirSync } from 'fs';
 import { get } from 'https';
 
-export const dateFile = __dirname + '/assets/files/dates.txt';
-export const nasaUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${process.env.nasaApiKey}`;
+const dateFile = 'api/src/assets/files/dates.txt';
 
 export const findExtensionOfString = string => {
   const regex = new RegExp('[^.]+$');
   const extension = string.match(regex);
   return extension;
-}
+};
   
-export const getDatesFromList = dateFile => {
-const datesArr = readFileSync(dateFile, 'utf8').toString().split('\n');
+export const getDatesFromFile = file => {
+const datesArr = readFileSync(file, 'utf8').toString().split('\n');
 const formattedDatesArr = datesArr.map(date => (date = new Date(date).toLocaleDateString('fr-CA')));
 return formattedDatesArr;
 };
@@ -34,24 +33,28 @@ export const fetchNasaApiImages = async url => {
 export const saveNasaImagesToDisk = async url => {
   const imgArr = await fetchNasaApiImages(url);
   const uploadImage = imgArr.map(async entry => {
-    const imgFolder = `${__dirname}/assets/images/${entry.earth_date}`;
+    const imgFolder = `api/src/assets/images`;
     const imgUrl = entry.img_src.replace(/http:/, 'https:');
-    const imgExt = findExtensionOfString(imgUrl);
-    const fileName = `${entry.id}.${imgExt}`;
-    get(imgUrl, response => {
-      const fileWriteStream = createWriteStream(`${imgFolder}/${fileName}`);
-      if (!existsSync(imgFolder)) {
-        mkdirSync(imgFolder, { recursive: true });
-      }
-      response.pipe(fileWriteStream);
+    const imgExt = await findExtensionOfString(imgUrl);
+    const fileName = `${entry.earth_date}_${entry.id}.${imgExt}`;
+    const filePath = `${imgFolder}/${fileName}`
+
+    !existsSync(imgFolder) && (
+        mkdirSync(imgFolder, { recursive: true }, err => {console.error(err)})
+    );
+    
+    get(imgUrl, res => {
+        const fileWriteStream = createWriteStream(filePath);
+        res.pipe(fileWriteStream);
     });
   });
   return uploadImage;
 };
 
-export const saveImagesInDateRange = async (url) => {
-  const datesArr = getDatesFromList(dateFile);
+export const saveImagesInDateRange = async () => {
+  const datesArr = await getDatesFromFile(dateFile);
   datesArr.map(async date => {
-    // saveNasaImagesToDisk();
-  }
+    const nasaUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${process.env.nasaApiKey}`;
+    await saveNasaImagesToDisk(nasaUrl);
+  });
 };

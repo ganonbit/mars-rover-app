@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node app/index.js"
+    "start": "node -r esm app/index.js"
   },
   "dependencies": {
-    "apollo-server": "^2.11.0",
-    "graphql": "^14.6.0"
+    "apollo-server-express": "^2.11.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "write": "^2.0.0"
   }
 }

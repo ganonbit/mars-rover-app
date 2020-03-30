@@ -1,30 +1,32 @@
-import { ApolloServer, gql } from 'apollo-server';
- 
-// The GraphQL schema
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { saveImagesInDateRange } from '../utils';
+
 const typeDefs = gql`
   type Query {
-    "A simple type for getting started!"
     hello: String
   }
 `;
- 
-new ApolloServer({
-  typeDefs,
-  resolvers: {
-    Query: {
-      images: (parent, args, context, info) => {
-        console.log(context.myProperty); // Will be `true`!
-        return books;
-      },
-    }
+
+const resolvers = {
+  Query: {
+    hello: () => 'Hello world!',
   },
-  context: async ({ req }) => {
-    return {
-      myProperty: true
-    };
-  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+const app = express();
+server.applyMiddleware({ app });
+// Define the static file path
+app.use(express.static(__dirname+'/public'));
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
 })
- 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+
+saveImagesInDateRange();
+
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+);
