@@ -1,8 +1,11 @@
 import fetch from 'isomorphic-unfetch';
 import { readFileSync, existsSync, mkdirSync } from 'fs';
 import download from 'image-downloader';
+import appRoot from 'app-root-path';
+import { pathToFileURL } from 'url';
 
-const dateFile = 'api/src/assets/files/dates.txt';
+const dateFile = `${appRoot}/api/assets/files/dates.txt`;
+const newImgArr = [];
 
 export const findExtensionOfString = string => {
     try {
@@ -26,10 +29,10 @@ export const getDatesFromFile = file => {
 
 export  async function downloadImage(options) {
     try {
-        const { filename, image } = await download.image(options)
-        console.log(filename) 
+        const filename = options.dest;
+        !filename && await download.image(options);
     } catch (e) {
-        console.error(e)
+        console.error(e);
     }
 };
 
@@ -41,8 +44,7 @@ export const fetchNasaApiImages = async url => {
     return flatPhotoData;
     } catch (error) {
     console.log(
-        'There has been a problem with your fetch operation: ',
-        error.message
+        `There has been a problem with your fetch operation: ${error.message}`
     );
     }
 };
@@ -51,17 +53,21 @@ export const saveNasaImagesToDisk = async url => {
     try {
         const imgArr = await fetchNasaApiImages(url);
         const imgDownload = imgArr.map(async entry => {
-        const imgFolder = `api/src/assets/images`;
+        const imgFolder = `${appRoot}/api/public/images`;
         const imgUrl = entry.img_src.replace(/http:/, 'https:');
         const imgExt = await findExtensionOfString(imgUrl);
         const fileName = `${entry.earth_date}_${entry.id}.${imgExt}`;
         const filePath = `${imgFolder}/${fileName}`
-
         !existsSync(imgFolder) && mkdirSync(imgFolder, { recursive: true });
         const nasaApiOptions = {
             url: imgUrl,
             dest: filePath,
-            timeout: 300000
+            timeout: 300000,
+            agent: false,
+            pool: {
+                maxSockets: 200
+            }
+
         }
         await downloadImage(nasaApiOptions)
         });

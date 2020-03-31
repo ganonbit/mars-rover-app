@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) for the purpose of displaying a gallery of the Nasa Images served via a Express.js API.
 
 ## Available Scripts
 

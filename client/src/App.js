@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Lazyload from 'react-lazyload';
-import { fetchApiData } from './';
-
-
+import { fetch } from 'isomorphic-unfetch';
 
   const App = () => {
     const [dataFromApi, setDataFromApi] = useState([]);
     useEffect(() => {
       async function fetchData() {
-        const result = await fetchApiData(nasaApi);
-        setDataFromApi(result);
+        try {
+          const res = fetch('http://localhost:4000/image/');
+          const data = await res.json();
+          console.log(data)
+          } catch (error) {
+          console.log(
+              `There has been a problem with your fetch operation: ${error.message}`
+          );
+          }
+        setDataFromApi(res);
       }
       
       fetchData();
