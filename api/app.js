@@ -16,19 +16,6 @@ app.use("/image", express.static(`${appRoot}/api/public/images`), (req, res) => 
   res.json({error:{code:404}})
 });
 
- const dataPath = './data/users.json';
-
- // READ
- app.get('/users', (req, res) => {
-     fs.readFile(dataPath, 'utf8', (err, data) => {
-         if (err) {
-             throw err;
-         }
-
-         res.send(JSON.parse(data));
-     });
- })
-
 saveImagesInDateRange();
 
 app.listen(4000, () =>
