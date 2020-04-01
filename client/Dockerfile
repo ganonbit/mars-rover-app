@@ -1,12 +1,10 @@
 FROM mhart/alpine-node:latest
 
-WORKDIR /app
-
+WORKDIR /client
 
 COPY package*.json .
 RUN yarn install 
-COPY /node_modules ./node_modules
-
-WORKDIR /app/client
+RUN yarn build
+COPY . .
 
 CMD ["yarn", "start"]
