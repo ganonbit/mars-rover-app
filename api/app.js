@@ -17,7 +17,6 @@ app.use('/image', express.static('public/images'))
 
 app.get('/', (req, res) => {
     const hostname = `${req.protocol}://${req.headers.host}`;
-    console.log(req.headers);
     const path = req.params[0] ? req.params[0] : `/public/images`;
     const dir = opendirSync(process.cwd() + path);
     let entity;
@@ -31,6 +30,6 @@ app.get('/', (req, res) => {
 
 saveImagesInDateRange();
 
-app.listen(4000, () =>
-  console.log('listening on port 4000'),
+app.listen(8000, () =>
+  console.log('listening on port 8000'),
 );

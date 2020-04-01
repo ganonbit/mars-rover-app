@@ -3,7 +3,7 @@ import { readFileSync, existsSync, mkdirSync } from 'fs';
 import download from 'image-downloader';
 import appRoot from 'app-root-path';
 
-const dateFile = `${appRoot}/api/assets/files/dates.txt`;
+const dateFile = `${appRoot}/assets/files/dates.txt`;
 
 export const findExtensionOfString = string => {
     try {
@@ -41,7 +41,7 @@ export const fetchNasaApiImages = async url => {
     const flatPhotoData = [].concat(...data.photos);
     return flatPhotoData;
     } catch (error) {
-    console.log(
+    console.error(
         `There has been a problem with your fetch operation: ${error.message}`
     );
     }
@@ -51,7 +51,7 @@ export const saveNasaImagesToDisk = async url => {
     try {
         const imgArr = await fetchNasaApiImages(url);
         const imgDownload = imgArr.map(async entry => {
-        const imgFolder = `${appRoot}/api/public/images`;
+        const imgFolder = `${appRoot}/public/images`;
         const imgUrl = entry.img_src.replace(/http:/, 'https:');
         const imgExt = await findExtensionOfString(imgUrl);
         const fileName = `${entry.earth_date}_${entry.id}.${imgExt}`;
