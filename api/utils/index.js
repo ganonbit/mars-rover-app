@@ -2,10 +2,8 @@ import fetch from 'isomorphic-unfetch';
 import { readFileSync, existsSync, mkdirSync } from 'fs';
 import download from 'image-downloader';
 import appRoot from 'app-root-path';
-import { pathToFileURL } from 'url';
 
 const dateFile = `${appRoot}/api/assets/files/dates.txt`;
-const newImgArr = [];
 
 export const findExtensionOfString = string => {
     try {
@@ -27,10 +25,10 @@ export const getDatesFromFile = file => {
     }
 };
 
-export  async function downloadImage(options) {
+export const downloadImage = async options => {
     try {
         const filename = options.dest;
-        !filename && await download.image(options);
+        !existsSync(filename) && await download.image(options);
     } catch (e) {
         console.error(e);
     }
