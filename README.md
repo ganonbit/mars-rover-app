@@ -5,6 +5,13 @@ This project was made to serve two purposes:
 
 # Available Scripts
 
+## Docker
+
+### `docker-compose up`
+
+runs the project and builds the images if none exist, then executes the commands to start the api and client
+
+
 ## API
 
 In the project directory, you can run:
@@ -17,7 +24,7 @@ Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
 The page will reload if you make edits via nodemon.
 
 
-## API
+## Client
 
 In the project directory, you can run:
 

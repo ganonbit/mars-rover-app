@@ -79,7 +79,7 @@ export const saveImagesInDateRange = async () => {
     try {
         const datesArr = await getDatesFromFile(dateFile);
         datesArr.map(async date => {
-        const nasaUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${process.env.nasaApiKey}`;
+        const nasaUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=h8C1xyg8GdXdNhhHfUTDQ7CmK2tNyrLo5ecIzClG`;
         const saveDateImages = await saveNasaImagesToDisk(nasaUrl);
         return saveDateImages
         });

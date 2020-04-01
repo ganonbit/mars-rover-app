@@ -5,6 +5,17 @@ api/public
 */node_modules
 */yarn.lock
 
+#.env only keeping in git for use of this project
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json

@@ -1,10 +1,9 @@
 FROM mhart/alpine-node:latest
 
-WORKDIR /app
+WORKDIR /api
+COPY . .
 
+RUN yarn install 
 
-COPY package*.json .
-RUN yarn install
-COPY /node_modules ./
-
+EXPOSE 8000
 CMD ["yarn", "start"]

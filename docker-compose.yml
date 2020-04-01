@@ -1,26 +1,31 @@
 version: '3'
 services:
-  app:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    expose: 
+      - 8000
+    ports:
+      - '8000:8000'
+    restart: on-failure
+    container_name: rover-api
+    volumes:
+      - /app/node_modules 
+      - ./api:/app 
+  client:
     build:
       context: ./client
       dockerfile: Dockerfile
     volumes:
       - /app/node_modules
       - ./client:/app
+    expose:
+      - 3000
     ports:
-      - '3000:3000'
+      - 3000:3000
+    stdin_open: true
     restart: on-failure
     container_name: rover-client
-  api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    ports:
-      - '4000:4000'
-    restart: on-failure
-    container_name: rover-api
-    volumes:
-      - /app/node_modules 
-      - ./api:/app 
-    env_file: 
-      - .env
+    depends_on: 
+      - api
