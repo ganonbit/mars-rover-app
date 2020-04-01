@@ -22,3 +22,5 @@ services:
     volumes:
       - /app/node_modules 
       - ./api:/app 
+    env_file: 
+      - .env

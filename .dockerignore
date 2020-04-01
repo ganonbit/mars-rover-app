@@ -1,5 +1,5 @@
 # public folder
-*/public
+api/public
 
 # dependencies
 */node_modules

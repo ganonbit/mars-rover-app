@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Lazyload from 'react-lazyload';
 import './App.css';
 
-const myApi = 'http://localhost:4000';
+const myApi = 'http://localhost:8000';
 
 
 export const fetchApiData = async url => {
